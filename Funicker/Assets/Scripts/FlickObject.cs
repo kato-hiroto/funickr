@@ -9,9 +9,13 @@ public class FlickObject : MonoBehaviour
     bool appearEnable = false;
     bool flickEnable = false;
 
+    // 回転用のパラメータ
+    public float rotateZ = 0f;
+
     // コンポーネントの格納
     Animator anim;
-    Image img; 
+    Image img;
+    RectTransform rect;
 
     // Componentの読み込み
     void Start()
@@ -19,11 +23,18 @@ public class FlickObject : MonoBehaviour
         setComponent();
     }
 
+    // 回転角度
+    void Update()
+    {
+        rect.localRotation = Quaternion.Euler(0f, 0f, rotateZ);
+    }
+
     // animのセット
     public FlickObject setComponent()
     {
         anim = GetComponent<Animator>();
         img = GetComponent<Image>();
+        rect = GetComponent<RectTransform>();
         return this;
     }
 

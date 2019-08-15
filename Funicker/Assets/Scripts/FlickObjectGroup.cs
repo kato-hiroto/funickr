@@ -21,8 +21,8 @@ public class FlickObjectGroup : MonoBehaviour
     // 画面サイズと操作範囲
     float width = 720f;
     float height = 1280f;
-    float ctrlWidth = 360f;
-    float ctrlHeight = 360f;
+    float ctrlWidth = 540f;
+    float ctrlHeight = 540f;
     
     // 触れた時のマウス位置など
     bool isPushing = false;
