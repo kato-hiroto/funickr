@@ -134,6 +134,11 @@ public class FlickObjectGroup : MonoBehaviour
         randomFlickObjs[(index + 1) % len].setParam(valueX, valueY, distance);
     }
 
+    // 現在のフリック物体を返す
+    public FlickObject returnFlickObj() {
+        return randomFlickObjs[index];
+    }
+
     // フリックする物体の削除
     void deleteObjects()
     {

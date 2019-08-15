@@ -15,7 +15,14 @@ public class FlickObject : MonoBehaviour
     // コンポーネントの格納
     Animator anim;
     Image img;
+    Text text;
+    InputField inputField;
     RectTransform rect;
+    GenerateFlickGroup generator;
+
+    // 保存されるべきパラメータ
+    public int correctDirection = 0;
+    public string subtitle = "かわいいシャミ子";
 
     // Componentの読み込み
     void Start()
@@ -35,6 +42,9 @@ public class FlickObject : MonoBehaviour
         anim = GetComponent<Animator>();
         img = GetComponent<Image>();
         rect = GetComponent<RectTransform>();
+        text = transform.Find("Text").GetComponent<Text>();
+        inputField = transform.Find("InputField").GetComponent<InputField>();
+        generator = transform.parent.parent.GetComponent<GenerateFlickGroup>();
         return this;
     }
 
@@ -52,6 +62,7 @@ public class FlickObject : MonoBehaviour
     // フリック画像としてセット
     public void setFlickImg()
     {
+        // フリック状態
         appearEnable = false;
         flickEnable = true;
         img.enabled = true;
@@ -59,6 +70,12 @@ public class FlickObject : MonoBehaviour
         anim.SetFloat("X", 0f);
         anim.SetFloat("Y", 0f);
         anim.SetFloat("Distance", 0f);
+
+        // 周辺のUI
+        generator.frameArrowColor.ChangeColor(correctDirection);
+        switchEdit(generator.isEdit);
+        text.text = subtitle;
+        inputField.text = subtitle;
     }
 
     // 終わった画像としてセット
@@ -84,5 +101,18 @@ public class FlickObject : MonoBehaviour
             anim.SetFloat("X", x);
             anim.SetFloat("Y", y);
         }
+    }
+
+    // サブタイトル編集状態の切り替え
+    public void switchEdit(bool state)
+    {
+        inputField.gameObject.SetActive(state);
+        text.gameObject.SetActive(!state);
+    }
+
+    // サブタイトルの書き換え
+    public void changeSubtitle() {
+        text.text = inputField.text;
+        subtitle = inputField.text;
     }
 }
