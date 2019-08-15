@@ -23,9 +23,16 @@ public class GenerateFlickGroup : MonoBehaviour
 
         // fogの物体生成関数を実行
         List<string> filepaths = new List<string>();
-        filepaths.Add("2191e9ca");
-        filepaths.Add("16fc7595");
-        filepaths.Add("ImageEmpty");
+        string namebase = "syamiko0";
+        for (int i = 0; i < 71; i++)
+        {
+            string num = i.ToString();
+            if (i < 10)
+            {
+                num = "0" + num;
+            }
+            filepaths.Add(namebase + num);
+        }
         fog.readData(filepaths);
     }
 

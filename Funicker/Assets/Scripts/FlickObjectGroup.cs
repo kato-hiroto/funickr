@@ -40,7 +40,6 @@ public class FlickObjectGroup : MonoBehaviour
         foreach (var path in filepaths)
         {
             Sprite tmp = Resources.Load<Sprite>(path);
-            Debug.Log(tmp);
             generateObjects(tmp);
         }
         generateFirstState();
