@@ -23,6 +23,7 @@ public class FlickObjectGroup : MonoBehaviour
     float height = 1280f;
     float ctrlWidth = 540f;
     float ctrlHeight = 540f;
+    bool isPanel = false;
     
     // 触れた時のマウス位置など
     bool isPushing = false;
@@ -33,7 +34,7 @@ public class FlickObjectGroup : MonoBehaviour
     Animator anim;
     public float moveParam = 0f;
 
-    // 保存データの読み込み
+    // 保存データの読み込み（のつもり　実際はただ与えられたResoucesパスのSprite読み込み）
     public void readData(List<string> filepaths)
     {
         Debug.Log(Screen.width);
@@ -113,30 +114,85 @@ public class FlickObjectGroup : MonoBehaviour
         }
         distance = Mathf.Max(valueX * valueX, valueY * valueY);
 
-        // フリックする物体の状態変更
-        if (distance >= 1f) {
-            randomFlickObjs[index].setEndImg();
-            randomFlickObjs[(index + 1) % len].setFlickImg();
-            randomFlickObjs[(index + 2) % len].setNextImg();
-            index = (index + 1) % len;
+        if (isPanel)
+        {
+            for (int i = 0; i < Mathf.Min(len, 20); i++)
+            {
+                int tmpindex = (index + i) % len;
+                if (!randomFlickObjs[tmpindex].isFloating)
+                {
+                    Debug.Log(distance);
+                    if (distance >= 1f)
+                    {
+                        randomFlickObjs[tmpindex].setFloatImg();
 
-            // マウス状態のリセット
-            isPushing = false;
-            startMouse = Vector2.zero;
-            lastValue  = Vector2.zero;
-            valueX = 0f;
-            valueY = 0f;
-            distance = 0f;
+                        // マウス状態のリセット
+                        isPushing = false;
+                        startMouse = Vector2.zero;
+                        lastValue  = Vector2.zero;
+                        valueX = 0f;
+                        valueY = 0f;
+                        distance = 0f;
+                    }
+                    else
+                    {
+                        randomFlickObjs[tmpindex].setParam(valueX, valueY, distance);
+                    }
+                }
+            }
         }
-        
-        // フリックする物体のパラメータ変更
-        randomFlickObjs[index].setParam(valueX, valueY, distance);
-        randomFlickObjs[(index + 1) % len].setParam(valueX, valueY, distance);
+        else
+        {            
+            // フリックする物体の状態変更
+            if (distance >= 1f)
+            {
+                randomFlickObjs[index].setEndImg();
+                randomFlickObjs[(index + 1) % len].setFlickImg();
+                randomFlickObjs[(index + 2) % len].setNextImg();
+                index = (index + 1) % len;
+
+                // マウス状態のリセット
+                isPushing = false;
+                startMouse = Vector2.zero;
+                lastValue  = Vector2.zero;
+                valueX = 0f;
+                valueY = 0f;
+                distance = 0f;
+            }
+
+            // フリックする物体のパラメータ変更
+            randomFlickObjs[index].setParam(valueX, valueY, distance);
+            randomFlickObjs[(index + 1) % len].setParam(valueX, valueY, distance);
+        }
     }
 
     // 現在のフリック物体を返す
-    public FlickObject returnFlickObj() {
+    public FlickObject returnFlickObj()
+    {
         return randomFlickObjs[index];
+    }
+
+    // パネルモードの切り替え
+    public void ChgPanelMode(bool state)
+    {
+        isPanel = state;
+        if (state)
+        {
+            for (int i = 0; i < Mathf.Min(len, 20); i++)
+            {
+                randomFlickObjs[(index + i) % len].setFloatImg();
+            }
+        }
+        else
+        {            
+            randomFlickObjs[index].setFlickImg();
+            randomFlickObjs[(index + 1) % len].setNextImg();
+            for (int i = 2; i < Mathf.Min(len, 20); i++)
+            {
+                randomFlickObjs[(index + i) % len].setEndImg();
+            }
+
+        }
     }
 
     // フリックする物体の削除
