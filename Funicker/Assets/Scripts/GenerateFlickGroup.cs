@@ -30,7 +30,7 @@ public class GenerateFlickGroup : MonoBehaviour
         // fogの物体生成関数を実行
         List<string> filepaths = new List<string>();
         string namebase = "syamiko0";
-        for (int i = 0; i < 71; i++)
+        for (int i = 0; i < 3; i++)
         {
             string num = i.ToString();
             if (i < 10)
