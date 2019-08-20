@@ -23,16 +23,41 @@ public class GenerateFlickGroup : MonoBehaviour
 
         // fogの物体生成関数を実行
         List<string> filepaths = new List<string>();
+        List<int> numbers = RandomNumbers(70, 10);
         string namebase = "syamiko0";
-        for (int i = 0; i < 70; i++)
+        for (int i = 0; i < 10; i++)
         {
-            string num = i.ToString();
-            if (i < 10)
+            foreach(int item in numbers)
             {
-                num = "0" + num;
-            }
-            filepaths.Add(namebase + num);
+                string num = item.ToString();
+                if (item < 10)
+                {
+                    num = "0" + num;
+                }
+                filepaths.Add(namebase + num);
+            }            
         }
         fog.readData(filepaths);
+    }
+
+    // 0からendMax-1までランダムに重複なくN個の数字を返す関数
+    List<int> RandomNumbers(int endMax, int N)
+    {
+        List<int> numbers = new List<int>();
+        for (int i = 0; i < N; i++)
+        {
+            int val = Random.Range(0, endMax - i);
+
+            // valのマッピング範囲を移動
+            for (int j = 0; j < i; j++)
+            {
+                if (val >= numbers[j])
+                {
+                    val++;
+                }
+            }
+            numbers.Add(val);
+        }
+        return numbers;
     }
 }
